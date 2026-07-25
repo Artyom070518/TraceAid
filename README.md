@@ -3,7 +3,14 @@
 [![GitHub](https://img.shields.io/badge/GitHub-TraceAid-0d9488?style=flat&logo=github)](https://github.com/Artyom070518/TraceAid)  [![Netlify](https://img.shields.io/badge/Netlify-Deployed-0d9488?style=flat&logo=netlify)](ht
 
 <div align="center">
-  <img src="https://willowy-begonia-4aa947.netlify.app/" alt="TraceAid 链善预览" width="800" />
+  <br/>
+  <a href="https://willowy-begonia-4aa947.netlify.app/">
+    <img src="https://img.shields.io/badge/在线演示-Click_Here-0d9488?style=for-the-badge&logo=netlify" alt="在线演示" />
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/Artyom070518/TraceAid">
+    <img src="https://img.shields.io/badge/GitHub-仓库-0d9488?style=for-the-badge&logo=github" alt="GitHub" />
+  </a>
   <br/><br/>
 </div>
 
@@ -88,6 +95,7 @@ TraceAid/
 | 商业计划书 | 10 章节完整商业计划 | [下载](./TraceAid_商业计划书.docx) |
 | 路演 PPT | 11 页 16:9 宽屏投资人演示 | [下载](./TraceAid_路演PPT.pptx) |
 | 功能说明文档 | C 端功能与区块链技术专项说明 | [查看](./user/功能说明文档.md) |
+| Demo 视频脚本 | 6 场景分镜拍摄指南 | [查看](./Demo视频拍摄脚本.md) |
 
 
 ## 竞品对比分析
