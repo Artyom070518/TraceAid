@@ -1,0 +1,1337 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TraceAid 链善 — 区块链公益透明平台</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+:root {
+  --p: #0d9488; --p2: #0f766e; --p3: #14b8a6;
+  --p50: #f0fdfa; --p100: #ccfbf1;
+  --b: #2563eb; --b50: #eff6ff;
+  --a: #f59e0b; --a50: #fffbeb;
+  --r: #ef4444; --r50: #fef2f2;
+  --g: #10b981; --g50: #f0fdf4;
+  --c: #7c3aed; --c50: #f5f0ff;
+  --bg: #f8fafc; --w: #ffffff;
+  --t1: #1e293b; --t2: #64748b; --t3: #94a3b8;
+  --ln: #e2e8f0;
+  --sh: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shm: 0 4px 12px rgba(0,0,0,0.08);
+  --shl: 0 12px 28px rgba(0,0,0,0.12);
+  --rds: 12px; --rds-sm: 8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,Inter,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--t1);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{text-decoration:none}
+.header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(255,255,255,0.92);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln);height:64px}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 24px;height:100%;display:flex;align-items:center;gap:8px}
+.header-logo{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.header-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--p),var(--p3));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px}
+.header-logo-text{font-size:18px;font-weight:700;color:var(--t1)}
+.header-logo-text span{color:var(--p)}
+.header-logo-sub{font-size:11px;color:var(--t3);margin-top:-2px}
+.header-nav{display:flex;align-items:center;gap:2px;margin-left:32px;flex:1}
+.header-nav a{padding:8px 14px;color:var(--t2);font-size:14px;font-weight:500;border-radius:var(--rds-sm);transition:all .15s;white-space:nowrap}
+.header-nav a:hover,.header-nav a.on{color:var(--p);background:var(--p50)}
+.header-actions{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
+.header-btn{padding:8px 18px;border-radius:var(--rds-sm);font-size:13px;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.header-btn-primary{background:var(--p);color:#fff}
+.header-btn-primary:hover{background:var(--p2)}
+.header-btn-ghost{background:transparent;color:var(--t2)}
+.header-btn-ghost:hover{background:var(--p50);color:var(--p)}
+.header-wallet{padding:6px 12px;border:1px solid var(--p);border-radius:var(--rds-sm);color:var(--p);font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;cursor:pointer;background:var(--p50)}
+.header-wallet:hover{background:var(--p100)}
+.hamburger{display:none;background:none;border:none;font-size:22px;color:var(--t1);cursor:pointer;padding:4px}
+.mobile-menu{display:none;position:fixed;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid var(--ln);padding:12px 20px;z-index:999;box-shadow:var(--shm)}
+.mobile-menu.open{display:block}
+.mobile-menu a{display:block;padding:10px 8px;color:var(--t2);font-size:15px;border-radius:var(--rds-sm)}
+.mobile-menu a.on{color:var(--p);background:var(--p50)}
+.mobile-menu .mobile-wallet{margin-top:8px;padding:10px;border:1px solid var(--ln);border-radius:var(--rds-sm);text-align:center;color:var(--p);font-weight:600;cursor:pointer}
+.main{margin-top:64px;min-height:calc(100vh - 64px)}
+.page{display:none;max-width:1280px;margin:0 auto;padding:32px 24px 60px}
+.page.active{display:block}
+.hero{background:linear-gradient(135deg,#0d9488 0%,#0f766e 40%,#1a2e35 100%);border-radius:var(--rds);padding:60px 48px;color:#fff;position:relative;overflow:hidden;margin-bottom:40px}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:300px;height:300px;background:radial-gradient(circle,rgba(20,184,166,0.3) 0%,transparent 70%);border-radius:50%}
+.hero::before{content:"";position:absolute;left:40%;bottom:-80px;width:200px;height:200px;background:radial-gradient(circle,rgba(245,158,11,0.15) 0%,transparent 70%);border-radius:50%}
+.hero-content{position:relative;z-index:1;max-width:640px}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;margin-bottom:16px}
+.hero h1{font-size:38px;font-weight:800;line-height:1.2;margin-bottom:12px;letter-spacing:-.5px}
+.hero h1 span{color:#fbbf24}
+.hero p{font-size:16px;color:rgba(255,255,255,0.85);line-height:1.7;margin-bottom:24px;max-width:520px}
+.hero-buttons{display:flex;gap:12px;flex-wrap:wrap}
+.hero-btn{padding:12px 28px;border-radius:var(--rds-sm);font-size:15px;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.hero-btn-primary{background:#fff;color:var(--p2)}
+.hero-btn-primary:hover{background:var(--p100);transform:translateY(-1px)}
+.hero-btn-outline{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,0.4)}
+.hero-btn-outline:hover{border-color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.08)}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:40px}
+.stat-card{background:var(--w);border-radius:var(--rds);padding:24px;box-shadow:var(--sh);border:1px solid var(--ln);text-align:center}
+.stat-card .icon-wrap{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin:0 auto 12px}
+.stat-card .num{font-size:28px;font-weight:800;color:var(--t1);line-height:1.2}
+.stat-card .label{font-size:13px;color:var(--t2);margin-top:4px}
+.stat-card .chain-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--p);background:var(--p50);padding:2px 8px;border-radius:10px;margin-top:6px}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px}
+.section-header h2{font-size:22px;font-weight:700}
+.section-header .sub{font-size:13px;color:var(--t2)}
+.section-header a{font-size:13px;color:var(--p);font-weight:500;display:flex;align-items:center;gap:4px}
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.project-card{background:var(--w);border-radius:var(--rds);overflow:hidden;box-shadow:var(--sh);border:1px solid var(--ln);transition:all .2s;cursor:pointer}
+.project-card:hover{box-shadow:var(--shm);transform:translateY(-2px)}
+.project-card-img{width:100%;height:180px;background:linear-gradient(135deg,#e0f2f1,#b2dfdb);display:flex;align-items:center;justify-content:center;font-size:40px;color:var(--p);position:relative}
+.project-card-badge{position:absolute;top:12px;left:12px;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.badge-ongoing{background:var(--g50);color:var(--g)}
+.badge-completed{background:var(--b50);color:var(--b)}
+.badge-chain{background:rgba(255,255,255,0.9);color:var(--p);display:flex;align-items:center;gap:4px;position:absolute;top:12px;right:12px;padding:3px 8px;border-radius:6px;font-size:10px;font-weight:500}
+.project-card-body{padding:16px}
+.project-card-title{font-size:16px;font-weight:600;margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.project-card-desc{font-size:13px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:12px;line-height:1.5}
+.project-card-meta{display:flex;gap:14px;font-size:12px;color:var(--t3);margin-bottom:10px}
+.project-card-meta span{display:flex;align-items:center;gap:3px}
+.project-card-progress{margin-top:8px}
+.progress-bar{height:6px;background:var(--ln);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--p3));border-radius:4px;transition:width .3s}
+.progress-fill.completed{background:linear-gradient(90deg,var(--b),var(--g))}
+.progress-info{display:flex;justify-content:space-between;font-size:12px;color:var(--t2);margin-top:4px}
+.tabs{display:flex;gap:4px;background:var(--ln);padding:3px;border-radius:var(--rds-sm);width:-moz-fit-content;width:fit-content;margin-bottom:24px}
+.tab{padding:7px 18px;border:none;background:transparent;border-radius:6px;font-size:13px;font-weight:500;color:var(--t2);cursor:pointer;transition:all .12s}
+.tab.on{background:var(--w);color:var(--t1);box-shadow:var(--sh)}
+.donation-list{display:flex;flex-direction:column;gap:12px}
+.donation-item{background:var(--w);border-radius:var(--rds);padding:16px 20px;border:1px solid var(--ln);box-shadow:var(--sh);display:flex;align-items:center;gap:16px}
+.donation-item .donation-icon{width:44px;height:44px;border-radius:10px;background:var(--p50);display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--p);flex-shrink:0}
+.donation-item .donation-info{flex:1;min-width:0}
+.donation-item .donation-name{font-weight:600;font-size:15px}
+.donation-item .donation-detail{font-size:12px;color:var(--t2);margin-top:2px;display:flex;gap:12px;flex-wrap:wrap}
+.donation-item .donation-detail .hash{font-family:"SF Mono",monospace;color:var(--p);font-size:11px;background:var(--p50);padding:1px 6px;border-radius:4px}
+.donation-item .donation-amount{font-size:18px;font-weight:700;color:var(--p);flex-shrink:0}
+.donation-item .donation-actions{display:flex;gap:6px;flex-shrink:0}
+.donation-item .action-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--ln);background:var(--w);color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;transition:all .12s}
+.donation-item .action-btn:hover{border-color:var(--p);color:var(--p);background:var(--p50)}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.photo-item{aspect-ratio:4/3;border-radius:var(--rds-sm);overflow:hidden;cursor:pointer;position:relative;background:var(--ln);display:flex;align-items:center;justify-content:center;font-size:36px;color:var(--t3)}
+.photo-item img{width:100%;height:100%;object-fit:cover}
+.photo-item-overlay{position:absolute;bottom:0;left:0;right:0;padding:8px 10px;background:linear-gradient(transparent,rgba(0,0,0,0.6));color:#fff;font-size:12px;opacity:0;transition:opacity .2s}
+.photo-item:hover .photo-item-overlay{opacity:1}
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(15,23,42,0.5);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--w);border-radius:16px;max-width:700px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shl);animation:modalIn .2s ease}
+.modal-wide{max-width:900px}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--ln);display:flex;align-items:center;justify-content:space-between}
+.modal-header h2{font-size:18px;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:8px;border:none;background:var(--bg);color:var(--t2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.modal-close:hover{background:var(--r50);color:var(--r)}
+.modal-body{padding:24px}
+.certificate{background:linear-gradient(135deg,#fef3c7,#fde68a,#fef3c7);border:2px solid #d97706;border-radius:16px;padding:32px;text-align:center;position:relative}
+.certificate-badge{position:absolute;top:12px;right:12px;background:var(--a);color:#fff;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600}
+.certificate h2{font-size:22px;color:#92400e}
+.certificate .cert-icon{font-size:48px;color:#d97706;margin-bottom:8px}
+.certificate .cert-hash{font-size:11px;color:#92400e;background:rgba(255,255,255,0.5);padding:4px 10px;border-radius:6px;font-family:monospace;word-break:break-all;display:inline-block;margin-top:8px}
+.certificate .cert-details{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.certificate .cert-detail{background:rgba(255,255,255,0.5);padding:10px;border-radius:var(--rds-sm)}
+.certificate .cert-detail .lbl{font-size:11px;color:#92400e;opacity:.7}
+.certificate .cert-detail .val{font-size:14px;font-weight:600;color:#78350f}
+.amount-select{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.amount-btn{padding:12px;border:1px solid var(--ln);border-radius:var(--rds-sm);background:var(--w);font-size:18px;font-weight:600;cursor:pointer;transition:all .12s}
+.amount-btn:hover{border-color:var(--p)}
+.amount-btn.on{border-color:var(--p);background:var(--p50);color:var(--p)}
+.amount-custom{display:flex;gap:8px;margin-top:8px}
+.amount-custom input{flex:1;padding:10px 14px;border:1px solid var(--ln);border-radius:var(--rds-sm);font-size:15px;outline:none}
+.amount-custom input:focus{border-color:var(--p)}
+.donate-confirm .chain-info{background:var(--p50);padding:12px;border-radius:var(--rds-sm);margin-bottom:12px;font-size:13px;color:var(--p2);display:flex;align-items:center;gap:8px}
+.news-carousel{position:relative;border-radius:var(--rds);overflow:hidden;margin-bottom:24px;height:260px;background:#1a2e35}
+.news-carousel-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:48px;color:rgba(255,255,255,0.2)}
+.news-carousel-content{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(transparent,rgba(0,0,0,0.8));color:#fff}
+.news-carousel-content h3{font-size:20px;margin-bottom:4px}
+.news-carousel-content p{font-size:13px;opacity:.85}
+.news-carousel-dots{position:absolute;bottom:12px;right:20px;display:flex;gap:6px}
+.news-carousel-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer}
+.news-carousel-dot.on{background:#fff}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.news-card{background:var(--w);border-radius:var(--rds);padding:16px;border:1px solid var(--ln);box-shadow:var(--sh);cursor:pointer;transition:all .15s}
+.news-card:hover{box-shadow:var(--shm)}
+.news-card .date{font-size:12px;color:var(--t3)}
+.news-card h4{font-size:15px;font-weight:600;margin:4px 0}
+.news-card p{font-size:13px;color:var(--t2)}
+.profile-header{display:flex;gap:24px;align-items:center;padding:32px;background:var(--w);border-radius:var(--rds);border:1px solid var(--ln);box-shadow:var(--sh);margin-bottom:24px}
+.profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--p3));display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;flex-shrink:0}
+.profile-info h2{font-size:20px;font-weight:700}
+.profile-info .joined{font-size:13px;color:var(--t2)}
+.profile-stats{display:flex;gap:32px;margin-top:8px}
+.profile-stats div{text-align:center}
+.profile-stats .num{font-size:20px;font-weight:700}
+.profile-stats .lbl{font-size:12px;color:var(--t3)}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.profile-card{background:var(--w);border-radius:var(--rds);padding:20px;border:1px solid var(--ln);box-shadow:var(--sh)}
+.profile-card h3{font-size:15px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.cert-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cert-card{padding:12px;border:1px solid var(--a);border-radius:var(--rds-sm);background:var(--a50);cursor:pointer;transition:all .12s}
+.cert-card:hover{border-color:#d97706}
+.cert-card .nft-name{font-size:13px;font-weight:600}
+.cert-card .nft-hash{font-size:10px;color:var(--t3);font-family:monospace;margin-top:2px}
+.about-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
+.about-step{text-align:center;padding:20px;background:var(--w);border-radius:var(--rds);border:1px solid var(--ln)}
+.about-step .step-icon{width:56px;height:56px;border-radius:50%;background:var(--p50);color:var(--p);display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px}
+.about-step h4{font-size:14px;font-weight:600}
+.about-step p{font-size:12px;color:var(--t2);margin-top:4px}
+.about-faq{margin-top:24px}
+.faq-item{border-bottom:1px solid var(--ln);padding:14px 0;cursor:pointer}
+.faq-item h4{font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+.faq-item .faq-answer{font-size:13px;color:var(--t2);padding:8px 0 0 24px;display:none}
+.faq-item.open .faq-answer{display:block}
+.footer{background:#0f172a;color:rgba(255,255,255,0.7);padding:40px 24px 24px;margin-top:40px}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
+.footer-brand .footer-logo{font-size:20px;font-weight:700;color:#fff;margin-bottom:8px}
+.footer-brand .footer-logo span{color:var(--p3)}
+.footer-brand p{font-size:13px;line-height:1.6}
+.footer h4{color:#fff;font-size:13px;font-weight:600;margin-bottom:10px}
+.footer a{display:block;font-size:13px;color:rgba(255,255,255,0.6);padding:3px 0}
+.footer a:hover{color:#fff}
+.footer-bottom{max-width:1280px;margin:24px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:12px;text-align:center}
+.btn-primary{padding:10px 24px;background:var(--p);color:#fff;border:none;border-radius:var(--rds-sm);font-size:14px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn-primary:hover{background:var(--p2)}
+.btn-outline{padding:10px 24px;background:transparent;color:var(--p);border:1.5px solid var(--p);border-radius:var(--rds-sm);font-size:14px;font-weight:600;cursor:pointer}
+.btn-outline:hover{background:var(--p50)}
+.btn-block{width:100%;justify-content:center}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:500}
+.tag-chain{background:var(--p50);color:var(--p)}
+.tag-zk{background:var(--c50);color:var(--c)}
+.empty-state{text-align:center;padding:48px 20px;color:var(--t3)}
+.empty-state i{font-size:48px;margin-bottom:12px}
+.mt-8{margin-top:8px}
+.mt-16{margin-top:16px}
+.mt-24{margin-top:24px}
+@media(max-width:968px){
+  .header-nav{display:none}
+  .header-actions .header-btn-ghost,.header-actions .header-wallet{display:none}
+  .hamburger{display:block}
+  .hero{padding:36px 24px}
+  .hero h1{font-size:28px}
+  .profile-grid{grid-template-columns:1fr}
+  .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .hero{padding:28px 16px;border-radius:0}
+  .hero h1{font-size:24px}
+  .hero p{font-size:14px}
+  .stats-row{grid-template-columns:1fr 1fr;gap:10px}
+  .project-grid{grid-template-columns:1fr}
+  .certificate .cert-details{grid-template-columns:1fr}
+  .donation-item{flex-wrap:wrap}
+  .profile-header{flex-direction:column;text-align:center}
+  .photo-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-inner{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+
+<!-- HEADER -->
+<header class="header">
+<div class="header-inner">
+  <a href="#" class="header-logo" onclick="switchPage('home')">
+    <div class="header-logo-icon"><i class="fas fa-link"></i></div>
+    <div>
+      <div class="header-logo-text">Trace<span>Aid</span></div>
+      <div class="header-logo-sub">链善 · 透明公益</div>
+    </div>
+  </a>
+  <nav class="header-nav" id="mainNav">
+    <a href="#" onclick="switchPage('home')" class="on" data-page="home">首页</a>
+    <a href="#" onclick="switchPage('projects')" data-page="projects">公益项目</a>
+    <a href="#" onclick="switchPage('news')" data-page="news">新闻中心</a>
+    <a href="#" onclick="switchPage('about')" data-page="about">服务说明</a>
+  </nav>
+  <div class="header-actions">
+    <button class="header-btn header-btn-ghost" onclick="switchPage('my-donations')"><i class="fas fa-heart"></i> 我的捐款</button>
+    <div class="header-wallet" id="walletBtn" onclick="toggleWallet()">
+      <i class="fas fa-wallet"></i> <span id="walletStatus">连接钱包</span>
+    </div>
+    <button class="header-btn header-btn-primary" onclick="switchPage('profile')"><i class="fas fa-user"></i></button>
+    <button class="hamburger" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+  </div>
+</div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="switchPage('home'); toggleMobileMenu()">首页</a>
+  <a href="#" onclick="switchPage('projects'); toggleMobileMenu()">公益项目</a>
+  <a href="#" onclick="switchPage('news'); toggleMobileMenu()">新闻中心</a>
+  <a href="#" onclick="switchPage('about'); toggleMobileMenu()">服务说明</a>
+  <a href="#" onclick="switchPage('my-donations'); toggleMobileMenu()">我的捐款</a>
+  <a href="#" onclick="switchPage('profile'); toggleMobileMenu()">个人中心</a>
+  <div class="mobile-wallet" onclick="toggleWallet(); toggleMobileMenu()"><i class="fas fa-wallet"></i> 连接钱包</div>
+</div>
+
+<div class="main" id="mainContent">
+
+<!-- PAGE: HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge"><i class="fas fa-shield-halved"></i> 区块链保障 · 每一笔捐款透明可追溯</div>
+      <h1>让每一份爱心 <span>都有迹可循</span></h1>
+      <p>TraceAid 链善利用区块链技术，将每一笔公益捐赠上链存证。您捐出的每一分钱，去向清楚、凭证可查、落实可见。</p>
+      <div class="hero-buttons">
+        <a href="#" class="hero-btn hero-btn-primary" onclick="switchPage('projects')"><i class="fas fa-hand-holding-heart"></i> 立即捐赠</a>
+        <a href="#" class="hero-btn hero-btn-outline" onclick="switchPage('about')"><i class="fas fa-circle-info"></i> 了解区块链透明机制</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="icon-wrap" style="background:var(--p50);color:var(--p);"><i class="fas fa-coins"></i></div>
+      <div class="num" id="statTotalDonation">&#165;12,846,500</div>
+      <div class="label">累计捐赠金额</div>
+      <div class="chain-badge"><i class="fas fa-link"></i> 链上存证</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon-wrap" style="background:var(--b50);color:var(--b);"><i class="fas fa-users"></i></div>
+      <div class="num" id="statBeneficiaries">3,286</div>
+      <div class="label">受助人数</div>
+      <div class="chain-badge"><i class="fas fa-circle-check"></i> 已验证上链</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon-wrap" style="background:var(--a50);color:var(--a);"><i class="fas fa-hand-holding-heart"></i></div>
+      <div class="num" id="statProjects">24</div>
+      <div class="label">公益项目数</div>
+      <div class="chain-badge"><i class="fas fa-link"></i> 全部上链</div>
+    </div>
+    <div class="stat-card">
+      <div class="icon-wrap" style="background:var(--c50);color:var(--c);"><i class="fas fa-certificate"></i></div>
+      <div class="num" id="statNFTs">1,847</div>
+      <div class="label">已颁发NFT证书</div>
+      <div class="chain-badge"><i class="fas fa-cube"></i> 链上铸造</div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <div>
+      <h2><i class="fas fa-arrow-trend-up" style="color:var(--p);margin-right:8px;"></i>热门公益项目</h2>
+      <div class="sub">正在进行中的优质公益项目，期待您的参与</div>
+    </div>
+    <a href="#" onclick="switchPage('projects')">查看全部 <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="project-grid" id="homeProjects"></div>
+
+  <div class="section-header mt-24">
+    <div>
+      <h2><i class="fas fa-circle-check" style="color:var(--g);margin-right:8px;"></i>已完成项目</h2>
+      <div class="sub">这些项目已成功落地，完整链上记录可供查验</div>
+    </div>
+    <a href="#" onclick="switchPage('projects')">查看全部 <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="project-grid" id="homeCompletedProjects"></div>
+</div>
+
+<!-- PAGE: PROJECTS -->
+<div class="page" id="page-projects">
+  <h2 style="margin-bottom:16px;"><i class="fas fa-hand-holding-heart" style="color:var(--p);margin-right:8px;"></i>公益项目</h2>
+  <div class="tabs" id="projectTabs">
+    <button class="tab on" data-tab="ongoing" onclick="filterProjects('ongoing')">进行中 <span class="tag tag-chain" style="margin-left:4px;">链上</span></button>
+    <button class="tab" data-tab="completed" onclick="filterProjects('completed')">已截止</button>
+  </div>
+  <div class="project-grid" id="allProjects"></div>
+</div>
+
+<!-- PAGE: NEWS -->
+<div class="page" id="page-news">
+  <h2 style="margin-bottom:16px;"><i class="fas fa-newspaper" style="color:var(--b);margin-right:8px;"></i>新闻中心</h2>
+  <div class="news-carousel" id="newsCarousel">
+    <div class="news-carousel-placeholder"><i class="fas fa-newspaper"></i></div>
+    <div class="news-carousel-content" id="carouselContent">
+      <h3 id="carouselTitle">区块链助力公益透明化</h3>
+      <p id="carouselDesc">TraceAid 平台荣获2026年度最佳区块链公益创新奖</p>
+    </div>
+    <div class="news-carousel-dots" id="carouselDots"></div>
+  </div>
+  <div class="news-grid" id="newsGrid"></div>
+</div>
+
+<!-- PAGE: MY DONATIONS -->
+<div class="page" id="page-my-donations">
+  <h2 style="margin-bottom:8px;"><i class="fas fa-heart" style="color:var(--r);margin-right:8px;"></i>我的捐款</h2>
+  <p style="color:var(--t2);margin-bottom:20px;font-size:14px;">您的每一笔捐款都已上链存证，点击 <i class="fas fa-image"></i> 查看活动照片，点击 <i class="fas fa-certificate"></i> 查看NFT证书</p>
+  <div class="donation-list" id="donationList"></div>
+</div>
+
+<!-- PAGE: PROFILE -->
+<div class="page" id="page-profile">
+  <div class="profile-header">
+    <div class="profile-avatar"><i class="fas fa-user"></i></div>
+    <div class="profile-info">
+      <h2>爱心用户 <span style="font-size:12px;font-weight:400;color:var(--t2);margin-left:8px;"><i class="fas fa-circle-check" style="color:var(--g);"></i> 已实名</span></h2>
+      <div class="joined">加入时间：2026-01-15 · 已参与 <span style="font-weight:600;color:var(--p);">12</span> 个公益项目</div>
+      <div class="profile-stats">
+        <div><div class="num" style="color:var(--p);">&#165;8,600</div><div class="lbl">累计捐赠</div></div>
+        <div><div class="num">12</div><div class="lbl">资助项目</div></div>
+        <div><div class="num">8</div><div class="lbl">获得NFT证书</div></div>
+        <div><div class="num" style="color:var(--p);">24</div><div class="lbl">链上交易</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="profile-grid">
+    <div class="profile-card">
+      <h3><i class="fas fa-certificate" style="color:var(--a);"></i> 我的NFT证书</h3>
+      <div class="cert-grid" id="myCerts"></div>
+    </div>
+    <div class="profile-card">
+      <h3><i class="fas fa-clock-rotate-left" style="color:var(--b);"></i> 最近捐赠</h3>
+      <div id="recentDonations"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: ABOUT -->
+<div class="page" id="page-about">
+  <h2 style="margin-bottom:8px;"><i class="fas fa-circle-info" style="color:var(--p);margin-right:8px;"></i>服务说明</h2>
+  <p style="color:var(--t2);margin-bottom:24px;font-size:14px;">TraceAid 链善利用区块链技术构建透明公益生态</p>
+
+  <div style="background:var(--w);border-radius:var(--rds);padding:24px;border:1px solid var(--ln);margin-bottom:20px;">
+    <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;"><i class="fas fa-link" style="color:var(--p);"></i> 区块链保障 · 透明可见</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="padding:12px;background:var(--p50);border-radius:var(--rds-sm);"><strong style="color:var(--p2);">&#x1f517; 每一笔捐款上链</strong><br><span style="font-size:13px;color:var(--t2);">所有捐款通过智能合约生成唯一交易哈希，永久存证</span></div>
+      <div style="padding:12px;background:var(--c50);border-radius:var(--rds-sm);"><strong style="color:var(--c);">&#x1f510; 受助人身份零知识验证</strong><br><span style="font-size:13px;color:var(--t2);">零知识证明(ZKP)验证受助人身份，隐私数据不上链</span></div>
+      <div style="padding:12px;background:var(--g50);border-radius:var(--rds-sm);"><strong style="color:var(--g);">&#x1f4cb; 智能合约自动拨款</strong><br><span style="font-size:13px;color:var(--t2);">按项目里程碑自动释放资金，不可篡改</span></div>
+      <div style="padding:12px;background:var(--a50);border-radius:var(--rds-sm);"><strong style="color:#b45309;">&#x1f3c6; NFT证书上链铸造</strong><br><span style="font-size:13px;color:var(--t2);">捐赠完成后自动铸造不可交易的NFT证书，含链上哈希</span></div>
+    </div>
+  </div>
+
+  <div class="about-flow">
+    <div class="about-step">
+      <div class="step-icon"><i class="fas fa-hand-holding-heart"></i></div>
+      <h4>&#x2460; 选择项目捐款</h4>
+      <p>浏览上链验证的公益项目，选择您想支持的项目</p>
+    </div>
+    <div class="about-step">
+      <div class="step-icon" style="background:var(--c50);color:var(--c);"><i class="fas fa-link"></i></div>
+      <h4>&#x2461; 资金上链存证</h4>
+      <p>捐款通过智能合约上链，生成不可篡改的交易记录</p>
+    </div>
+    <div class="about-step">
+      <div class="step-icon" style="background:var(--a50);color:var(--a);"><i class="fas fa-clock-rotate-left"></i></div>
+      <h4>&#x2462; 过程透明可查</h4>
+      <p>每一笔拨款都有链上凭证，您可以随时查看资金流向</p>
+    </div>
+    <div class="about-step">
+      <div class="step-icon" style="background:var(--g50);color:var(--g);"><i class="fas fa-certificate"></i></div>
+      <h4>&#x2463; 获得NFT证书</h4>
+      <p>活动结束后获得专属NFT捐赠证书，永久保存您的爱心</p>
+    </div>
+  </div>
+
+  
+  <div style="background:var(--w);border-radius:var(--rds);padding:24px;border:1px solid var(--ln);margin-bottom:20px;">
+    <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;"><i class="fas fa-chart-simple" style="color:var(--p);"></i> 竞品对比 · TraceAid vs 其他公益平台</h3>
+    <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <thead>
+        <tr style="background:var(--p50);">
+          <th style="padding:10px 12px;text-align:left;">对比维度</th>
+          <th style="padding:10px 12px;text-align:center;">Gitcoin</th>
+          <th style="padding:10px 12px;text-align:center;">Giveth</th>
+          <th style="padding:10px 12px;text-align:center;">腾讯公益</th>
+          <th style="padding:10px 12px;text-align:center;">蚂蚁链公益</th>
+          <th style="padding:10px 12px;text-align:center;background:var(--p);color:#fff;border-radius:6px 0 0 0;"><strong>TraceAid</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--ln);">
+          <td style="padding:8px 12px;font-weight:500;">透明化程度</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--a);">★★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--a);">★★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t3);">★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--p);font-weight:600;">★★★★</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ln);">
+          <td style="padding:8px 12px;font-weight:500;">隐私保护</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t3);">★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t3);">★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--p);font-weight:600;">★★★★</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ln);">
+          <td style="padding:8px 12px;font-weight:500;">国内可用性</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t3);;">★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t3);;">★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--g);">★★★★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--g);font-weight:600;">★★★★★</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--ln);">
+          <td style="padding:8px 12px;font-weight:500;">中小机构友好</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t3);;">★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--g);font-weight:600;">★★★★★</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;font-weight:500;">产品完整度</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--b);">★★★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--t2);">★★★</td>
+          <td style="padding:8px 12px;text-align:center;color:var(--p);font-weight:600;">★★★★</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:12px;color:var(--t3);margin-top:10px;"><i class="fas fa-info-circle"></i> 评分基于公开信息与产品体验对比，TraceAid 在隐私保护、中小机构友好和国内可用性方面具有显著优势。</p>
+  </div>
+<div class="about-faq">
+    <h3 style="font-size:16px;font-weight:600;margin-bottom:12px;"><i class="fas fa-question-circle"></i> 常见问题</h3>
+    <div class="faq-item open" onclick="toggleFaq(this)">
+      <h4><i class="fas fa-chevron-right" style="font-size:10px;"></i> 我的捐款如何上链？</h4>
+      <div class="faq-answer">每一笔捐款都会通过我们部署在区块链上的智能合约进行处理。捐款完成后，您将获得一个唯一的交易哈希（TxHash），可在区块链浏览器上公开查询。该记录永久保存，不可篡改。</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <h4><i class="fas fa-chevron-right" style="font-size:10px;"></i> 如何查看资金流向？</h4>
+      <div class="faq-answer">在项目详情页中，您可以查看"链上资金流向"模块，该模块展示了从募捐到拨款的全链路区块记录。每个拨款批次都对应一个智能合约交易，发起时间、金额、接收方、审批状态均可追溯。</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <h4><i class="fas fa-chevron-right" style="font-size:10px;"></i> NFT证书有什么用？</h4>
+      <div class="faq-answer">NFT捐赠证书是您参与公益活动的链上凭证，包含您的捐赠金额、项目名称、时间戳和链上哈希。该NFT不可交易、不可转让，仅作为您爱心行为的永久记录。您可以在个人中心查看和展示您的NFT证书。</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <h4><i class="fas fa-chevron-right" style="font-size:10px;"></i> 受助人信息如何保障隐私？</h4>
+      <div class="faq-answer">我们采用零知识证明（Zero-Knowledge Proof）技术验证受助人身份信息。验证过程确保受助人符合资助条件，但受助人的具体身份信息（如姓名、身份证号等敏感数据）不会上链公开，充分保护隐私。</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: Project Detail -->
+<div class="modal-overlay" id="projectModal">
+<div class="modal modal-wide" id="projectModalContent">
+  <div class="modal-header">
+    <h2 id="projectModalTitle">项目详情</h2>
+    <button class="modal-close" onclick="closeModal('projectModal')"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div class="modal-body" id="projectModalBody"></div>
+</div>
+</div>
+
+<!-- MODAL: Donate -->
+<div class="modal-overlay" id="donateModal">
+<div class="modal">
+  <div class="modal-header">
+    <h2>爱心捐款</h2>
+    <button class="modal-close" onclick="closeModal('donateModal')"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div class="modal-body" id="donateModalBody">
+    <div id="donateStep1">
+      <p style="font-size:13px;color:var(--t2);margin-bottom:8px;">选择捐款金额 — 支持 <strong id="donateProjectName">项目名称</strong></p>
+      <div class="amount-select" id="amountSelect">
+        <button class="amount-btn" data-amount="50" onclick="selectAmount(this)">&#165;50</button>
+        <button class="amount-btn" data-amount="100" onclick="selectAmount(this)">&#165;100</button>
+        <button class="amount-btn" data-amount="200" onclick="selectAmount(this)">&#165;200</button>
+        <button class="amount-btn" data-amount="500" onclick="selectAmount(this)">&#165;500</button>
+        <button class="amount-btn" data-amount="1000" onclick="selectAmount(this)">&#165;1,000</button>
+        <button class="amount-btn" data-amount="5000" onclick="selectAmount(this)">&#165;5,000</button>
+      </div>
+      <div class="amount-custom">
+        <input type="number" id="customAmount" placeholder="自定义金额 (&#165;)" min="1" oninput="customAmountInput()">
+      </div>
+      <div class="mt-16">
+        <label style="font-size:13px;color:var(--t2);display:block;margin-bottom:6px;">留言（选填）</label>
+        <input type="text" id="donateMessage" placeholder="写下您的祝福..." style="width:100%;padding:10px 14px;border:1px solid var(--ln);border-radius:var(--rds-sm);font-size:14px;">
+      </div>
+      <button class="btn-primary btn-block mt-16" onclick="donateStep2()">下一步 · 上链确认 <i class="fas fa-link"></i></button>
+    </div>
+    <div id="donateStep2" style="display:none;">
+      <div class="donate-confirm">
+        <div class="chain-info"><i class="fas fa-link"></i> 您的捐款将通过智能合约上链存证，生成唯一区块链交易哈希</div>
+        <div style="background:var(--bg);padding:16px;border-radius:var(--rds-sm);margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;font-size:14px;padding:4px 0;"><span style="color:var(--t2);">项目</span><span id="confirmProject" style="font-weight:600;"></span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;padding:4px 0;"><span style="color:var(--t2);">捐款金额</span><span id="confirmAmount" style="font-weight:700;color:var(--p);font-size:18px;"></span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;padding:4px 0;"><span style="color:var(--t2);">留言</span><span id="confirmMessage" style="color:var(--t1);">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;padding:4px 0;"><span style="color:var(--t2);">链上费用 (Gas)</span><span style="color:var(--t1);">&#8776; &#165;0.02</span></div>
+        </div>
+        <button class="btn-primary btn-block" onclick="executeDonate()"><i class="fas fa-link"></i> 确认上链捐款</button>
+        <button class="btn-outline btn-block mt-8" onclick="donateStep1()">返回修改</button>
+      </div>
+    </div>
+    <div id="donateStep3" style="display:none;">
+      <div style="text-align:center;padding:20px;">
+        <div style="font-size:60px;color:var(--g);margin-bottom:12px;"><i class="fas fa-circle-check"></i></div>
+        <h3 style="font-size:20px;color:var(--t1);">捐款成功！</h3>
+        <p style="color:var(--t2);margin:8px 0 16px;">您的爱心已经上链存证，您可以查看交易详情</p>
+        <div style="background:var(--bg);padding:12px;border-radius:var(--rds-sm);text-align:left;font-size:12px;font-family:monospace;">
+          <div>TxHash: <span style="color:var(--p);" id="donateTxHash">0x7a3f...b9e2</span> <i class="fas fa-copy" style="cursor:pointer;color:var(--t3);" onclick="copyHash('donateTxHash')"></i></div>
+          <div>区块高度: #<span id="donateBlockNum">18,247,631</span></div>
+          <div>时间戳: <span id="donateTimestamp">2026-07-25 11:18:32 UTC+8</span></div>
+          <div>状态: <span style="color:var(--g);">&#x2713; 已确认</span></div>
+        </div>
+        <button class="btn-primary mt-16" onclick="closeModal('donateModal')">完成</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: Photo Gallery -->
+<div class="modal-overlay" id="photoModal">
+<div class="modal">
+  <div class="modal-header">
+    <h2><i class="fas fa-image"></i> 活动照片</h2>
+    <button class="modal-close" onclick="closeModal('photoModal')"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div class="modal-body" id="photoModalBody">
+    <div class="photo-grid" id="photoGrid"></div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL: NFT Certificate -->
+<div class="modal-overlay" id="certModal">
+<div class="modal">
+  <div class="modal-header">
+    <h2><i class="fas fa-certificate" style="color:var(--a);"></i> NFT捐赠证书</h2>
+    <button class="modal-close" onclick="closeModal('certModal')"><i class="fas fa-xmark"></i></button>
+  </div>
+  <div class="modal-body" id="certModalBody">
+    <div class="certificate">
+      <div class="cert-badge"><i class="fas fa-cube"></i> ERC-721 · 链上铸造</div>
+      <div class="cert-icon"><i class="fas fa-certificate"></i></div>
+      <h2>爱心捐赠证书</h2>
+      <p style="color:#92400e;margin:4px 0 16px;">感谢您为公益事业做出的贡献</p>
+      <div class="cert-details" id="certDetails">
+        <div class="cert-detail"><div class="lbl">捐赠金额</div><div class="val" id="certAmount">&#165;500</div></div>
+        <div class="cert-detail"><div class="lbl">项目名称</div><div class="val" id="certProjectName">山区助学计划</div></div>
+        <div class="cert-detail"><div class="lbl">捐赠时间</div><div class="val" id="certDate">2026-07-25</div></div>
+      </div>
+      <div class="cert-hash">TxHash: <span id="certHash">0x7a3f8b2c...d4e9f1a0</span></div>
+      <p style="font-size:10px;color:#92400e;margin-top:12px;opacity:.7;">本证书为不可交易的链上公益凭证，所有信息链上存证永久有效</p>
+    </div>
+    <button class="btn-primary btn-block mt-16" onclick="closeModal('certModal')"><i class="fas fa-check"></i> 确认</button>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="footer-inner">
+  <div class="footer-brand">
+    <div class="footer-logo">Trace<span>Aid</span></div>
+    <p>TraceAid 链善 — 用区块链技术重塑公益信任。每一笔捐赠上链存证，每一分善款透明可查，让爱心真正落到实处。</p>
+    <p style="margin-top:8px;">
+      <span class="tag tag-chain"><i class="fas fa-link"></i> 已接入区块链网络</span>
+      <span class="tag tag-zk" style="margin-left:6px;"><i class="fas fa-shield"></i> ZK隐私保护</span>
+    </p>
+  </div>
+  <div>
+    <h4>快捷入口</h4>
+    <a href="#" onclick="switchPage('projects')">公益项目</a>
+    <a href="#" onclick="switchPage('my-donations')">我的捐款</a>
+    <a href="#" onclick="switchPage('profile')">个人中心</a>
+  </div>
+  <div>
+    <h4>关于我们</h4>
+    <a href="#" onclick="switchPage('about')">服务说明</a>
+    <a href="#" onclick="switchPage('news')">新闻中心</a>
+    <a href="#">隐私政策</a>
+    <a href="#">服务条款</a>
+  
+  <div class="footer-links" style="margin-top:16px;">
+    <h4><i class="fas fa-link"></i> 相关链接</h4>
+    <a href="../index.html" target="_blank"><i class="fas fa-shield-alt"></i> 管理后台（B 端）</a>
+    <a href="../TraceAid_商业计划书.docx" target="_blank"><i class="fas fa-file-word"></i> 商业计划书</a>
+    <a href="../TraceAid_路演PPT.pptx" target="_blank"><i class="fas fa-file-powerpoint"></i> 路演 PPT</a>
+  </div>
+</div>
+  <div>
+    <h4>联系我们</h4>
+    <a href="#"><i class="fas fa-envelope"></i> contact@traceaid.org</a>
+    <a href="#"><i class="fab fa-twitter"></i> @TraceAid</a>
+    <a href="#"><i class="fab fa-github"></i> TraceAid</a>
+  </div>
+</div>
+<div class="footer-bottom">
+  &copy; 2026 TraceAid 链善. All rights reserved. 基于区块链技术的透明公益平台.
+</div>
+</footer>
+
+<script>
+// ====== DATA ======
+const projects = [
+  { id: 1, title: "书送希望 山区小学图书馆建设", desc: "为云南山区20所小学建设图书角，让3000名孩子拥有优质课外读物。区块链记录每一笔采购明细，物资采购上链公示。", img: "book", raised: 425000, goal: 500000, donors: 312, beneficiaries: 3000, batch: 3, status: "ongoing", category: "教育助学", org: "中国乡村教育基金会", chainTx: "0x7a3f8b2c...d4e9f1a0" },
+  { id: 2, title: "净水行动 农村安全饮水工程", desc: "为甘肃干旱地区安装20台净水设备，解决5000名村民安全饮水问题。智能合约按工程进度分批拨款，工程验收上链存证。", img: "water", raised: 680000, goal: 800000, donors: 524, beneficiaries: 5000, batch: 2, status: "ongoing", category: "基础设施", org: "蓝天公益基金会", chainTx: "0x3f8c1a2b...e5d6c7f8" },
+  { id: 3, title: "暖冬计划 困境儿童冬衣捐赠", desc: "为四川凉山2000名困境儿童送去保暖冬衣和学习用品。每件衣物采购均有链上凭证，发放过程全程记录。", img: "coat", raised: 185000, goal: 200000, donors: 215, beneficiaries: 2000, batch: 1, status: "ongoing", category: "扶贫济困", org: "阳光志愿者协会", chainTx: "0x9b1e2c3d...f4a5b6c7" },
+  { id: 4, title: "光明行 白内障患者复明手术", desc: "为贵州偏远地区500名白内障患者提供免费复明手术。项目资金通过智能合约直接拨付给合作医院，每例手术单独上链。", img: "eye", raised: 920000, goal: 1000000, donors: 678, beneficiaries: 500, batch: 4, status: "ongoing", category: "医疗健康", org: "光明慈善总会", chainTx: "0xd4f5e6a7...b8c9d0e1" },
+  { id: 5, title: "筑梦未来 大学生助学贷款", desc: "为200名贫困大学生提供无息助学贷款，毕业后按收入比例还款。区块链记录每笔贷款的发放与回收全过程。", img: "graduation", raised: 1200000, goal: 1500000, donors: 845, beneficiaries: 200, batch: 2, status: "ongoing", category: "教育助学", org: "教育发展基金会", chainTx: "0x2c8f0d1e...a2b3c4d5" },
+  { id: 6, title: "守护夕阳 孤寡老人关爱行动", desc: "为300名孤寡老人提供每月生活物资和医疗补贴。每笔发放都有受助人数字签名上链确认，资金流向完全透明。", img: "sunset", raised: 360000, goal: 360000, donors: 289, beneficiaries: 300, batch: 8, status: "completed", category: "养老关爱", org: "夕阳红公益", chainTx: "0x5e7b8c9d...f0a1b2c3" },
+  { id: 7, title: "绿色家园 乡村振兴生态种植", desc: "帮助200户农户种植经济林，改善生态的同时增加收入。农业补贴通过区块链发放，农户可直接查询。", img: "tree", raised: 280000, goal: 280000, donors: 198, beneficiaries: 800, batch: 6, status: "completed", category: "乡村振兴", org: "绿色行动组织", chainTx: "0x1a2b3c4d...e5f6a7b8" },
+  { id: 8, title: "听见世界 听障儿童人工耳蜗", desc: "为50名听障儿童植入人工耳蜗并配套康复训练。所有医疗费用经由智能合约直接结算，康复进展定期更新。", img: "hearing", raised: 750000, goal: 750000, donors: 567, beneficiaries: 50, batch: 5, status: "completed", category: "医疗健康", org: "听力保护基金会", chainTx: "0x8f6e5d4c...b3a2c1d0" }
+];
+
+const projectIcons = { book: "fa-book", water: "fa-droplet", coat: "fa-shirt", eye: "fa-eye", graduation: "fa-graduation-cap", sunset: "fa-sun", tree: "fa-tree", hearing: "fa-ear-listen" };
+
+const news = [
+  { title: "区块链助力公益透明化", desc: "TraceAid 平台荣获2026年度最佳区块链公益创新奖，科技向善的实践典范。", date: "2026-07-20", icon: "fa-trophy" },
+  { title: "山区图书馆项目突破40万筹款", desc: ""书送希望"项目已筹集42.5万元，预计下月完成全部建设目标。", date: "2026-07-18", icon: "fa-book" },
+  { title: "净水行动第二批设备成功安装", desc: "净水设备已全部通过验收，5000名村民喝上放心水，智能合约完成第二批拨款。", date: "2026-07-15", icon: "fa-droplet" },
+  { title: "暖冬计划志愿者招募启动", desc: "暖冬计划进入实施阶段，现面向社会招募200名志愿者参与冬衣分装与发放。", date: "2026-07-12", icon: "fa-hand-holding-heart" },
+  { title: "TraceAid 与清华大学合作研究", desc: "双方联合开展"区块链+公益"课题研究，探索更加高效的公益信任机制。", date: "2026-07-10", icon: "fa-flask" },
+  { title: "NFT捐赠证书系统升级", desc: "新版NFT证书支持更多元化的展示效果，同时降低链上铸造Gas费用。", date: "2026-07-08", icon: "fa-certificate" }
+];
+
+const photos = [
+  { emoji: "📖", label: "山区孩子阅读新书", projectId: 1 },
+  { emoji: "🏫", label: "新建图书角实景", projectId: 1 },
+  { emoji: "📚", label: "书籍整理与分类", projectId: 1 },
+  { emoji: "👧", label: "孩子们开心的笑脸", projectId: 1 },
+  { emoji: "💧", label: "净水设备安装现场", projectId: 2 },
+  { emoji: "🏗️", label: "工程师调试设备", projectId: 2 },
+  { emoji: "🚰", label: "村民用上干净水", projectId: 2 },
+  { emoji: "🌾", label: "受益村庄新面貌", projectId: 2 },
+  { emoji: "🧥", label: "冬衣发放现场", projectId: 3 },
+  { emoji: "👟", label: "学习用品分发", projectId: 3 },
+  { emoji: "🎒", label: "孩子们收到礼物", projectId: 3 },
+  { emoji: "😊", label: "受助儿童合影", projectId: 3 },
+  { emoji: "👁️", label: "复明手术进行中", projectId: 4 },
+  { emoji: "🏥", label: "医疗队抵达山区", projectId: 4 },
+  { emoji: "👨‍⚕️", label: "医生为患者检查", projectId: 4 },
+  { emoji: "🙏", label: "老人重见光明", projectId: 4 },
+  { emoji: "🎓", label: "贫困大学生入学", projectId: 5 },
+  { emoji: "📝", label: "助学贷款签约仪式", projectId: 5 },
+  { emoji: "🏛️", label: "大学校园合影", projectId: 5 },
+  { emoji: "🌟", label: "学生代表发言", projectId: 5 },
+  { emoji: "🌅", label: "志愿者慰问老人", projectId: 6 },
+  { emoji: "🍚", label: "生活物资送达", projectId: 6 },
+  { emoji: "💊", label: "医疗补贴发放", projectId: 6 },
+  { emoji: "❤️", label: "老人幸福的笑容", projectId: 6 },
+  { emoji: "🌳", label: "经济林种植场景", projectId: 7 },
+  { emoji: "🌱", label: "树苗培育基地", projectId: 7 },
+  { emoji: "🍊", label: "丰收的果实", projectId: 7 },
+  { emoji: "🏡", label: "农户新居环境", projectId: 7 },
+  { emoji: "🦻", label: "人工耳蜗植入手术", projectId: 8 },
+  { emoji: "👂", label: "术后康复训练", projectId: 8 },
+  { emoji: "🎵", label: "孩子第一次听到音乐", projectId: 8 },
+  { emoji: "😊", label: "康复出院合影", projectId: 8 }
+];
+
+const donations = [
+  { id: 1, projectId: 1, amount: 500, name: "书送希望 山区小学图书馆建设", date: "2026-07-20", tx: "0x7a3f8b2c...d4e9f1a0", status: "confirmed" },
+  { id: 2, projectId: 2, amount: 200, name: "净水行动 农村安全饮水工程", date: "2026-07-18", tx: "0x3f8c1a2b...e5d6c7f8", status: "confirmed" },
+  { id: 3, projectId: 4, amount: 1000, name: "光明行 白内障患者复明手术", date: "2026-07-15", tx: "0xd4f5e6a7...b8c9d0e1", status: "confirmed" },
+  { id: 4, projectId: 3, amount: 100, name: "暖冬计划 困境儿童冬衣捐赠", date: "2026-07-12", tx: "0x9b1e2c3d...f4a5b6c7", status: "confirmed" },
+  { id: 5, projectId: 5, amount: 300, name: "筑梦未来 大学生助学贷款", date: "2026-07-10", tx: "0x2c8f0d1e...a2b3c4d5", status: "confirmed" },
+  { id: 6, projectId: 6, amount: 200, name: "守护夕阳 孤寡老人关爱行动", date: "2026-06-28", tx: "0x5e7b8c9d...f0a1b2c3", status: "confirmed" }
+];
+
+const certs = [
+  { id: 1, projectId: 1, name: "书送希望 爱心证书", amount: 500, date: "2026-07-20", hash: "0x7a3f8b2c...d4e9f1a0" },
+  { id: 2, projectId: 2, name: "净水行动 爱心证书", amount: 200, date: "2026-07-18", hash: "0x3f8c1a2b...e5d6c7f8" },
+  { id: 3, projectId: 4, name: "光明行 爱心证书", amount: 1000, date: "2026-07-15", hash: "0xd4f5e6a7...b8c9d0e1" },
+  { id: 4, projectId: 3, name: "暖冬计划 爱心证书", amount: 100, date: "2026-07-12", hash: "0x9b1e2c3d...f4a5b6c7" }
+];
+
+// ====== STATE ======
+let selectedAmount = 0;
+let currentDonateProject = null;
+let walletConnected = false;
+
+// ====== NAVIGATION ======
+function switchPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  const el = document.getElementById("page-" + page);
+  if (el) el.classList.add("active");
+  document.querySelectorAll("#mainNav a, .mobile-menu a").forEach(a => {
+    a.classList.toggle("on", a.dataset.page === page);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function toggleMobileMenu() {
+  document.getElementById("mobileMenu").classList.toggle("open");
+}
+
+// ====== WALLET ======
+function toggleWallet() {
+  walletConnected = !walletConnected;
+  const el = document.getElementById("walletStatus");
+  if (walletConnected) {
+    el.textContent = "0x7421...8f3C";
+    document.getElementById("walletBtn").style.borderColor = "var(--g)";
+    document.getElementById("walletBtn").style.color = "var(--g)";
+    document.getElementById("walletBtn").style.background = "var(--g50)";
+  } else {
+    el.textContent = "连接钱包";
+    document.getElementById("walletBtn").style.borderColor = "";
+    document.getElementById("walletBtn").style.color = "";
+    document.getElementById("walletBtn").style.background = "";
+  }
+}
+
+// ====== RENDER ======
+function renderProjectCard(p) {
+  const pct = Math.min(100, Math.round(p.raised / p.goal * 100));
+  const iconClass = projectIcons[p.img] || "fa-hand-holding-heart";
+  const statusCls = p.status === "ongoing" ? "badge-ongoing" : "badge-completed";
+  const statusTxt = p.status === "ongoing" ? "进行中" : "已完成";
+  const isCompleted = p.status === "completed";
+  return \`
+    <div class="project-card" onclick="openProjectDetail(\${p.id})">
+      <div class="project-card-img">
+        <i class="fas \${iconClass}"></i>
+        <span class="project-card-badge \${statusCls}">\${statusTxt}</span>
+        <span class="badge-chain"><i class="fas fa-link"></i> 已上链</span>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-title">\${p.title}</div>
+        <div class="project-card-desc">\${p.desc}</div>
+        <div class="project-card-meta">
+          <span><i class="fas fa-users"></i> \${p.beneficiaries}人</span>
+          <span><i class="fas fa-hand-holding-heart"></i> \${p.donors}人</span>
+          <span><i class="fas fa-layer-group"></i> 第\${p.batch}批</span>
+        </div>
+        <div class="project-card-progress">
+          <div class="progress-bar"><div class="progress-fill \${isCompleted ? "completed" : ""}" style="width:\${pct}%"></div></div>
+          <div class="progress-info">
+            <span><strong>&#165;\${(p.raised/10000).toFixed(1)}万</strong> / &#165;\${(p.goal/10000).toFixed(1)}万</span>
+            <span>\${pct}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  \`;
+}
+
+function renderProjects() {
+  const ongoing = projects.filter(p => p.status === "ongoing");
+  const completed = projects.filter(p => p.status === "completed");
+
+  document.getElementById("homeProjects").innerHTML = ongoing.map(renderProjectCard).join("");
+  document.getElementById("homeCompletedProjects").innerHTML = completed.slice(0, 2).map(renderProjectCard).join("");
+  document.getElementById("allProjects").innerHTML = ongoing.map(renderProjectCard).join("");
+}
+
+function filterProjects(status) {
+  document.querySelectorAll("#projectTabs .tab").forEach(t => t.classList.remove("on"));
+  document.querySelector(\`#projectTabs .tab[data-tab="\${status}"]\`).classList.add("on");
+  const filtered = projects.filter(p => p.status === status);
+  document.getElementById("allProjects").innerHTML = filtered.map(renderProjectCard).join("");
+}
+
+function renderNews() {
+  const grid = document.getElementById("newsGrid");
+  grid.innerHTML = news.map(n => \`
+    <div class="news-card">
+      <div class="date"><i class="far fa-calendar"></i> \${n.date}</div>
+      <h4><i class="fas \${n.icon}" style="color:var(--p);margin-right:4px;"></i> \${n.title}</h4>
+      <p>\${n.desc}</p>
+    </div>
+  \`).join("");
+
+  // Carousel dots
+  const dots = document.getElementById("carouselDots");
+  const carouselNews = news.slice(0, 4);
+  dots.innerHTML = carouselNews.map((_, i) => \`<span class="news-carousel-dot \${i === 0 ? "on" : ""}" onclick="switchCarousel(\${i})"></span>\`).join("");
+}
+
+let carouselIdx = 0;
+function switchCarousel(idx) {
+  carouselIdx = idx;
+  const items = news.slice(0, 4);
+  document.getElementById("carouselTitle").textContent = items[idx].title;
+  document.getElementById("carouselDesc").textContent = items[idx].desc;
+  document.querySelectorAll("#carouselDots .news-carousel-dot").forEach((d, i) => {
+    d.classList.toggle("on", i === idx);
+  });
+}
+setInterval(() => {
+  const items = news.slice(0, 4);
+  switchCarousel((carouselIdx + 1) % items.length);
+}, 5000);
+
+function renderDonations() {
+  const list = document.getElementById("donationList");
+  list.innerHTML = donations.map(d => \`
+    <div class="donation-item">
+      <div class="donation-icon"><i class="fas fa-heart"></i></div>
+      <div class="donation-info">
+        <div class="donation-name">\${d.name}</div>
+        <div class="donation-detail">
+          <span>\${d.date}</span>
+          <span class="hash"><i class="fas fa-link"></i> \${d.tx}</span>
+          <span style="color:var(--g);"><i class="fas fa-circle-check"></i> 已确认</span>
+        </div>
+      </div>
+      <div class="donation-amount">&#165;\${d.amount.toLocaleString()}</div>
+      <div class="donation-actions">
+        <button class="action-btn" onclick="openPhotoModal(\${d.projectId})" title="查看活动照片"><i class="fas fa-image"></i></button>
+        <button class="action-btn" onclick="openCertModalFor(\${d.id})" title="查看NFT证书"><i class="fas fa-certificate"></i></button>
+        <button class="action-btn" onclick="copyHashText('${d.tx}')" title="复制交易哈希"><i class="fas fa-copy"></i></button>
+      </div>
+    </div>
+  \`).join("");
+}
+
+function renderCerts() {
+  const grid = document.getElementById("myCerts");
+  grid.innerHTML = certs.map(c => \`
+    <div class="cert-card" onclick="openCertModal(\${c.id})">
+      <div class="nft-name"><i class="fas fa-certificate" style="color:var(--a);"></i> \${c.name}</div>
+      <div class="nft-hash">\${c.hash}</div>
+    </div>
+  \`).join("");
+
+  const recent = document.getElementById("recentDonations");
+  recent.innerHTML = donations.slice(0, 4).map(d => \`
+    <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--ln);font-size:13px;">
+      <span>\${d.name.slice(0, 12)}...</span>
+      <span style="font-weight:600;color:var(--p);">&#165;\${d.amount}</span>
+    </div>
+  \`).join("") || \`<div class="empty-state"><p>暂无捐赠记录</p></div>\`;
+}
+
+// ====== PROJECT DETAIL ======
+function openProjectDetail(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  const pct = Math.min(100, Math.round(p.raised / p.goal * 100));
+  const isCompleted = p.status === "completed";
+  const iconClass = projectIcons[p.img] || "fa-hand-holding-heart";
+
+  document.getElementById("projectModalTitle").textContent = p.title;
+  document.getElementById("projectModalBody").innerHTML = \`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+      <div>
+        <div style="width:100%;height:200px;background:linear-gradient(135deg,#e0f2f1,#b2dfdb);border-radius:var(--rds-sm);display:flex;align-items:center;justify-content:center;font-size:64px;color:var(--p);margin-bottom:16px;">
+          <i class="fas \${iconClass}"></i>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+          <span class="tag tag-chain"><i class="fas fa-link"></i> \${p.chainTx}</span>
+          <span class="tag" style="background:var(--b50);color:var(--b);">\${p.category}</span>
+          <span class="tag" style="background:var(--a50);color:#b45309;">第\${p.batch}批拨款</span>
+        </div>
+        <p style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:12px;">\${p.desc}</p>
+        <p style="font-size:13px;color:var(--t2);"><strong>执行机构：</strong>\${p.org}</p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0;">
+      <div style="text-align:center;padding:12px;background:var(--p50);border-radius:var(--rds-sm);">
+        <div style="font-size:20px;font-weight:700;color:var(--p);">&#165;\${(p.raised/10000).toFixed(1)}万</div>
+        <div style="font-size:11px;color:var(--t2);">已筹集 / \${(p.goal/10000).toFixed(1)}万</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:var(--b50);border-radius:var(--rds-sm);">
+        <div style="font-size:20px;font-weight:700;color:var(--b);">\${p.donors}</div>
+        <div style="font-size:11px;color:var(--t2);">捐款人数</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:var(--g50);border-radius:var(--rds-sm);">
+        <div style="font-size:20px;font-weight:700;color:var(--g);">\${p.beneficiaries}</div>
+        <div style="font-size:11px;color:var(--t2);">受助人数</div>
+      </div>
+      <div style="text-align:center;padding:12px;background:var(--c50);border-radius:var(--rds-sm);">
+        <div style="font-size:20px;font-weight:700;color:var(--c);">\${pct}%</div>
+        <div style="font-size:11px;color:var(--t2);">完成进度</div>
+      </div>
+    </div>
+    <div class="project-card-progress" style="margin-bottom:20px;">
+      <div class="progress-bar"><div class="progress-fill \${isCompleted ? "completed" : ""}" style="width:\${pct}%"></div></div>
+      <div class="progress-info"><span>已筹集</span><span>\${pct}%</span></div>
+    </div>
+    <div style="background:var(--p50);padding:16px;border-radius:var(--rds-sm);margin-bottom:20px;">
+      <h4 style="font-size:14px;font-weight:600;color:var(--p2);margin-bottom:8px;"><i class="fas fa-link"></i> 链上资金流向</h4>
+      <div style="font-size:12px;">
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--p100);">
+          <span>募资合约</span><span style="font-family:monospace;color:var(--p);">0x7421...8f3C</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--p100);">
+          <span>已拨款批次</span><span style="font-weight:600;">\${p.batch} 批</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;">
+          <span>智能合约状态</span><span style="color:var(--g);"><i class="fas fa-circle-check"></i> 运行中</span>
+        </div>
+      </div>
+    </div>
+    \${p.status === "ongoing" ? \`<button class="btn-primary btn-block" onclick="openDonateModal(\${p.id})"><i class="fas fa-hand-holding-heart"></i> 立即捐款 — 区块链上链存证</button>\` : \`<div style="text-align:center;padding:12px;background:var(--g50);border-radius:var(--rds-sm);color:var(--g);font-weight:600;"><i class="fas fa-circle-check"></i> 该项目已成功完成，感谢所有捐赠者的爱心支持！</div>\`}
+  \`;
+  openModal("projectModal");
+}
+
+// ====== DONATE FLOW ======
+function openDonateModal(projectId) {
+  const p = projects.find(x => x.id === projectId);
+  if (!p) return;
+  currentDonateProject = p;
+  selectedAmount = 0;
+  document.getElementById("donateProjectName").textContent = p.title;
+  document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("on"));
+  document.getElementById("customAmount").value = "";
+  document.getElementById("donateMessage").value = "";
+  document.getElementById("donateStep1").style.display = "block";
+  document.getElementById("donateStep2").style.display = "none";
+  document.getElementById("donateStep3").style.display = "none";
+  closeModal("projectModal");
+  openModal("donateModal");
+}
+
+function selectAmount(btn) {
+  document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("on"));
+  btn.classList.add("on");
+  document.getElementById("customAmount").value = "";
+  selectedAmount = parseInt(btn.dataset.amount);
+}
+
+function customAmountInput() {
+  document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("on"));
+  const v = document.getElementById("customAmount").value;
+  selectedAmount = v ? parseInt(v) : 0;
+}
+
+function donateStep2() {
+  if (!selectedAmount || selectedAmount < 1) { alert("请选择或输入捐款金额"); return; }
+  document.getElementById("donateStep1").style.display = "none";
+  document.getElementById("donateStep2").style.display = "block";
+  document.getElementById("confirmProject").textContent = currentDonateProject.title;
+  document.getElementById("confirmAmount").textContent = "¥" + selectedAmount.toLocaleString();
+  const msg = document.getElementById("donateMessage").value || "-";
+  document.getElementById("confirmMessage").textContent = msg;
+}
+
+function donateStep1() {
+  document.getElementById("donateStep2").style.display = "none";
+  document.getElementById("donateStep1").style.display = "block";
+}
+
+function executeDonate() {
+  document.getElementById("donateStep2").style.display = "none";
+  document.getElementById("donateStep3").style.display = "block";
+  const hash = "0x" + Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join("");
+  const block = Math.floor(Math.random() * 500000 + 18000000);
+  document.getElementById("donateTxHash").textContent = hash.slice(0, 10) + "..." + hash.slice(-4);
+  document.getElementById("donateBlockNum").textContent = block.toLocaleString();
+  document.getElementById("donateTimestamp").textContent = new Date().toLocaleString("zh-CN", {timeZone: "Asia/Shanghai"}) + " UTC+8";
+}
+
+function copyHash(elementId) {
+  const el = document.getElementById(elementId);
+  if (el) {
+    navigator.clipboard.writeText(el.textContent).catch(() => {});
+  }
+}
+
+function copyHashText(txt) {
+  navigator.clipboard.writeText(txt).catch(() => {});
+}
+
+// ====== PHOTO MODAL ======
+function openPhotoModal(projectId) {
+  const projectPhotos = photos.filter(p => p.projectId === projectId);
+  const p = projects.find(x => x.id === projectId);
+  const title = p ? p.title : "活动照片";
+  document.querySelector("#photoModal h2").innerHTML = \`<i class="fas fa-image"></i> \${title} 活动记录\`;
+  document.getElementById("photoGrid").innerHTML = projectPhotos.map(ph => \`
+    <div class="photo-item">
+      <span style="font-size:48px;">\${ph.emoji}</span>
+      <div class="photo-item-overlay">\${ph.label}</div>
+    </div>
+  \`).join("") || \`<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-image"></i><p>暂无活动照片</p></div>\`;
+  openModal("photoModal");
+}
+
+// ====== CERT MODAL ======
+function openCertModal(id) {
+  const c = certs.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById("certAmount").textContent = "¥" + c.amount.toLocaleString();
+  document.getElementById("certProjectName").textContent = c.name;
+  document.getElementById("certDate").textContent = c.date;
+  document.getElementById("certHash").textContent = c.hash;
+  openModal("certModal");
+}
+
+function openCertModalFor(donationId) {
+  const d = donations.find(x => x.id === donationId);
+  if (!d) return;
+  const match = certs.find(c => c.projectId === d.projectId);
+  if (match) { openCertModal(match.id); return; }
+  // Auto-create cert
+  const newCert = { id: certs.length + 1, projectId: d.projectId, name: d.name + " 爱心证书", amount: d.amount, date: d.date, hash: d.tx };
+  certs.push(newCert);
+  openCertModal(newCert.id);
+}
+
+// ====== MODAL HELPERS ======
+function openModal(id) {
+  document.getElementById(id).classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+// Close modals on overlay click
+document.querySelectorAll(".modal-overlay").forEach(el => {
+  el.addEventListener("click", function(e) {
+    if (e.target === this) {
+      this.classList.remove("open");
+      document.body.style.overflow = "";
+    }
+  });
+});
+
+// ====== FAQ ======
+function toggleFaq(el) {
+  el.classList.toggle("open");
+}
+
+// ====== INIT ======
+renderProjects();
+renderNews();
+renderDonations();
+renderCerts();
+</script>
+</body>
+</html>
+
+<script>
+
+// ====== DATA ======
+const projects = [
+  { id: 1, title: "书送希望 山区小学图书馆建设", desc: "为云南山区20所小学建设图书角，让3000名孩子拥有优质课外读物。区块链记录每一笔采购明细，物资采购上链公示。", img: "book", raised: 425000, goal: 500000, donors: 312, beneficiaries: 3000, batch: 3, status: "ongoing", category: "教育助学", org: "中国乡村教育基金会", chainTx: "0x7a3f8b2c...d4e9f1a0" },
+  { id: 2, title: "净水行动 农村安全饮水工程", desc: "为甘肃干旱地区安装20台净水设备，解决5000名村民安全饮水问题。智能合约按工程进度分批拨款，工程验收上链存证。", img: "water", raised: 680000, goal: 800000, donors: 524, beneficiaries: 5000, batch: 2, status: "ongoing", category: "基础设施", org: "蓝天公益基金会", chainTx: "0x3f8c1a2b...e5d6c7f8" },
+  { id: 3, title: "暖冬计划 困境儿童冬衣捐赠", desc: "为四川凉山2000名困境儿童送去保暖冬衣和学习用品。每件衣物采购均有链上凭证，发放过程全程记录。", img: "coat", raised: 185000, goal: 200000, donors: 215, beneficiaries: 2000, batch: 1, status: "ongoing", category: "扶贫济困", org: "阳光志愿者协会", chainTx: "0x9b1e2c3d...f4a5b6c7" },
+  { id: 4, title: "光明行 白内障患者复明手术", desc: "为贵州偏远地区500名白内障患者提供免费复明手术。项目资金通过智能合约直接拨付给合作医院，每例手术单独上链。", img: "eye", raised: 920000, goal: 1000000, donors: 678, beneficiaries: 500, batch: 4, status: "ongoing", category: "医疗健康", org: "光明慈善总会", chainTx: "0xd4f5e6a7...b8c9d0e1" },
+  { id: 5, title: "筑梦未来 大学生助学贷款", desc: "为200名贫困大学生提供无息助学贷款，毕业后按收入比例还款。区块链记录每笔贷款的发放与回收全过程。", img: "graduation", raised: 1200000, goal: 1500000, donors: 845, beneficiaries: 200, batch: 2, status: "ongoing", category: "教育助学", org: "教育发展基金会", chainTx: "0x2c8f0d1e...a2b3c4d5" },
+  { id: 6, title: "守护夕阳 孤寡老人关爱行动", desc: "为300名孤寡老人提供每月生活物资和医疗补贴。每笔发放都有受助人数字签名上链确认，资金流向完全透明。", img: "sunset", raised: 360000, goal: 360000, donors: 289, beneficiaries: 300, batch: 8, status: "completed", category: "养老关爱", org: "夕阳红公益", chainTx: "0x5e7b8c9d...f0a1b2c3" },
+  { id: 7, title: "绿色家园 乡村振兴生态种植", desc: "帮助200户农户种植经济林，改善生态的同时增加收入。农业补贴通过区块链发放，农户可直接查询。", img: "tree", raised: 280000, goal: 280000, donors: 198, beneficiaries: 800, batch: 6, status: "completed", category: "乡村振兴", org: "绿色行动组织", chainTx: "0x1a2b3c4d...e5f6a7b8" },
+  { id: 8, title: "听见世界 听障儿童人工耳蜗", desc: "为50名听障儿童植入人工耳蜗并配套康复训练。所有医疗费用经由智能合约直接结算，康复进展定期更新。", img: "hearing", raised: 750000, goal: 750000, donors: 567, beneficiaries: 50, batch: 5, status: "completed", category: "医疗健康", org: "听力保护基金会", chainTx: "0x8f6e5d4c...b3a2c1d0" }
+];
+const projectIcons = { book: "fa-book", water: "fa-droplet", coat: "fa-shirt", eye: "fa-eye", graduation: "fa-graduation-cap", sunset: "fa-sun", tree: "fa-tree", hearing: "fa-ear-listen" };
+const news = [
+  { title: "区块链助力公益透明化", desc: "TraceAid 平台荣获2026年度最佳区块链公益创新奖，科技向善的实践典范。", date: "2026-07-20", icon: "fa-trophy" },
+  { title: "山区图书馆项目突破40万筹款", desc: "“书送希望”项目已筹集42.5万元，预计下月完成全部建设目标。", date: "2026-07-18", icon: "fa-book" },
+  { title: "净水行动第二批设备成功安装", desc: "净水设备已全部通过验收，5000名村民喝上放心水，智能合约完成第二批拨款。", date: "2026-07-15", icon: "fa-droplet" },
+  { title: "暖冬计划志愿者招募启动", desc: "暖冬计划进入实施阶段，现面向社会招募200名志愿者参与冬衣分装与发放。", date: "2026-07-12", icon: "fa-hand-holding-heart" },
+  { title: "TraceAid 与清华大学合作研究", desc: "双方联合开展“区块链+公益”课题研究，探索更加高效的公益信任机制。", date: "2026-07-10", icon: "fa-flask" },
+  { title: "NFT捐赠证书系统升级", desc: "新版NFT证书支持更多元化的展示效果，同时降低链上铸造Gas费用。", date: "2026-07-08", icon: "fa-certificate" }
+];
+const photos = [
+  { emoji: "📖", label: "山区孩子阅读新书", projectId: 1 },
+  { emoji: "🏫", label: "新建图书角实景", projectId: 1 },
+  { emoji: "📚", label: "书籍整理与分类", projectId: 1 },
+  { emoji: "👧", label: "孩子们开心的笑脸", projectId: 1 },
+  { emoji: "💧", label: "净水设备安装现场", projectId: 2 },
+  { emoji: "🏗️", label: "工程师调试设备", projectId: 2 },
+  { emoji: "🚰", label: "村民用上干净水", projectId: 2 },
+  { emoji: "🌾", label: "受益村庄新面貌", projectId: 2 },
+  { emoji: "🧥", label: "冬衣发放现场", projectId: 3 },
+  { emoji: "👟", label: "学习用品分发", projectId: 3 },
+  { emoji: "🎒", label: "孩子们收到礼物", projectId: 3 },
+  { emoji: "😊", label: "受助儿童合影", projectId: 3 },
+  { emoji: "👁️", label: "复明手术进行中", projectId: 4 },
+  { emoji: "🏥", label: "医疗队抵达山区", projectId: 4 },
+  { emoji: "👨‍⚕️", label: "医生为患者检查", projectId: 4 },
+  { emoji: "🙏", label: "老人重见光明", projectId: 4 },
+  { emoji: "🎓", label: "贫困大学生入学", projectId: 5 },
+  { emoji: "📝", label: "助学贷款签约仪式", projectId: 5 },
+  { emoji: "🏛️", label: "大学校园合影", projectId: 5 },
+  { emoji: "🌟", label: "学生代表发言", projectId: 5 },
+  { emoji: "🌅", label: "志愿者慰问老人", projectId: 6 },
+  { emoji: "🍚", label: "生活物资送达", projectId: 6 },
+  { emoji: "💊", label: "医疗补贴发放", projectId: 6 },
+  { emoji: "❤️", label: "老人幸福的笑容", projectId: 6 },
+  { emoji: "🌳", label: "经济林种植场景", projectId: 7 },
+  { emoji: "🌱", label: "树苗培育基地", projectId: 7 },
+  { emoji: "🍊", label: "丰收的果实", projectId: 7 },
+  { emoji: "🏡", label: "农户新居环境", projectId: 7 },
+  { emoji: "🦻", label: "人工耳蜗植入手术", projectId: 8 },
+  { emoji: "👂", label: "术后康复训练", projectId: 8 },
+  { emoji: "🎵", label: "孩子第一次听到音乐", projectId: 8 },
+  { emoji: "😊", label: "康复出院合影", projectId: 8 }
+];
+const donations = [
+  { id: 1, projectId: 1, amount: 500, name: "书送希望 山区小学图书馆建设", date: "2026-07-20", tx: "0x7a3f8b2c...d4e9f1a0", status: "confirmed" },
+  { id: 2, projectId: 2, amount: 200, name: "净水行动 农村安全饮水工程", date: "2026-07-18", tx: "0x3f8c1a2b...e5d6c7f8", status: "confirmed" },
+  { id: 3, projectId: 4, amount: 1000, name: "光明行 白内障患者复明手术", date: "2026-07-15", tx: "0xd4f5e6a7...b8c9d0e1", status: "confirmed" },
+  { id: 4, projectId: 3, amount: 100, name: "暖冬计划 困境儿童冬衣捐赠", date: "2026-07-12", tx: "0x9b1e2c3d...f4a5b6c7", status: "confirmed" },
+  { id: 5, projectId: 5, amount: 300, name: "筑梦未来 大学生助学贷款", date: "2026-07-10", tx: "0x2c8f0d1e...a2b3c4d5", status: "confirmed" },
+  { id: 6, projectId: 6, amount: 200, name: "守护夕阳 孤寡老人关爱行动", date: "2026-06-28", tx: "0x5e7b8c9d...f0a1b2c3", status: "confirmed" }
+];
+const certs = [
+  { id: 1, projectId: 1, name: "书送希望 爱心证书", amount: 500, date: "2026-07-20", hash: "0x7a3f8b2c...d4e9f1a0" },
+  { id: 2, projectId: 2, name: "净水行动 爱心证书", amount: 200, date: "2026-07-18", hash: "0x3f8c1a2b...e5d6c7f8" },
+  { id: 3, projectId: 4, name: "光明行 爱心证书", amount: 1000, date: "2026-07-15", hash: "0xd4f5e6a7...b8c9d0e1" },
+  { id: 4, projectId: 3, name: "暖冬计划 爱心证书", amount: 100, date: "2026-07-12", hash: "0x9b1e2c3d...f4a5b6c7" }
+];
+let selectedAmount = 0;
+let currentDonateProject = null;
+let walletConnected = false;
+function switchPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  const el = document.getElementById("page-" + page);
+  if (el) el.classList.add("active");
+  document.querySelectorAll("#mainNav a, .mobile-menu a").forEach(a => { a.classList.toggle("on", a.dataset.page === page); });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function toggleMobileMenu() { document.getElementById("mobileMenu").classList.toggle("open"); }
+function toggleWallet() {
+  walletConnected = !walletConnected;
+  const el = document.getElementById("walletStatus");
+  if (walletConnected) {
+    el.textContent = "0x7421...8f3C";
+    document.getElementById("walletBtn").style.borderColor = "var(--g)";
+    document.getElementById("walletBtn").style.color = "var(--g)";
+    document.getElementById("walletBtn").style.background = "var(--g50)";
+  } else {
+    el.textContent = "连接钱包";
+    document.getElementById("walletBtn").style.borderColor = "";
+    document.getElementById("walletBtn").style.color = "";
+    document.getElementById("walletBtn").style.background = "";
+  }
+}
+function renderProjectCard(p) {
+  const pct = Math.min(100, Math.round(p.raised / p.goal * 100));
+  const iconClass = projectIcons[p.img] || "fa-hand-holding-heart";
+  const statusCls = p.status === "ongoing" ? "badge-ongoing" : "badge-completed";
+  const statusTxt = p.status === "ongoing" ? "进行中" : "已完成";
+  const isCompleted = p.status === "completed";
+  return `<div class="project-card" onclick="openProjectDetail(${p.id})"><div class="project-card-img"><i class="fas ${iconClass}"></i><span class="project-card-badge ${statusCls}">${statusTxt}</span><span class="badge-chain"><i class="fas fa-link"></i> 已上链</span></div><div class="project-card-body"><div class="project-card-title">${p.title}</div><div class="project-card-desc">${p.desc}</div><div class="project-card-meta"><span><i class="fas fa-users"></i> ${p.beneficiaries}人</span><span><i class="fas fa-hand-holding-heart"></i> ${p.donors}人</span><span><i class="fas fa-layer-group"></i> 第${p.batch}批</span></div><div class="project-card-progress"><div class="progress-bar"><div class="progress-fill ${isCompleted ? "completed" : ""}" style="width:${pct}%"></div></div><div class="progress-info"><span><strong>¥${(p.raised/10000).toFixed(1)}万</strong> / ¥${(p.goal/10000).toFixed(1)}万</span><span>${pct}%</span></div></div></div></div>`;
+}
+function renderProjects() {
+  const ongoing = projects.filter(p => p.status === "ongoing");
+  const completed = projects.filter(p => p.status === "completed");
+  document.getElementById("homeProjects").innerHTML = ongoing.map(renderProjectCard).join("");
+  document.getElementById("homeCompletedProjects").innerHTML = completed.slice(0, 2).map(renderProjectCard).join("");
+  document.getElementById("allProjects").innerHTML = ongoing.map(renderProjectCard).join("");
+}
+function filterProjects(status) {
+  document.querySelectorAll("#projectTabs .tab").forEach(t => t.classList.remove("on"));
+  document.querySelector(`#projectTabs .tab[data-tab="${status}"]`).classList.add("on");
+  document.getElementById("allProjects").innerHTML = projects.filter(p => p.status === status).map(renderProjectCard).join("");
+}
+function renderNews() {
+  const grid = document.getElementById("newsGrid");
+  grid.innerHTML = news.map(n => `<div class="news-card"><div class="date"><i class="far fa-calendar"></i> ${n.date}</div><h4><i class="fas ${n.icon}" style="color:var(--p);margin-right:4px;"></i> ${n.title}</h4><p>${n.desc}</p></div>`).join("");
+  const dots = document.getElementById("carouselDots");
+  const cn = news.slice(0, 4);
+  dots.innerHTML = cn.map((_, i) => `<span class="news-carousel-dot ${i === 0 ? "on" : ""}" onclick="switchCarousel(${i})"></span>`).join("");
+}
+let carouselIdx = 0;
+function switchCarousel(idx) {
+  carouselIdx = idx;
+  const items = news.slice(0, 4);
+  document.getElementById("carouselTitle").textContent = items[idx].title;
+  document.getElementById("carouselDesc").textContent = items[idx].desc;
+  document.querySelectorAll("#carouselDots .news-carousel-dot").forEach((d, i) => d.classList.toggle("on", i === idx));
+}
+setInterval(() => { const items = news.slice(0, 4); switchCarousel((carouselIdx + 1) % items.length); }, 5000);
+function renderDonations() {
+  document.getElementById("donationList").innerHTML = donations.map(d => `<div class="donation-item"><div class="donation-icon"><i class="fas fa-heart"></i></div><div class="donation-info"><div class="donation-name">${d.name}</div><div class="donation-detail"><span>${d.date}</span><span class="hash"><i class="fas fa-link"></i> ${d.tx}</span><span style="color:var(--g);"><i class="fas fa-circle-check"></i> 已确认</span></div></div><div class="donation-amount">¥${d.amount.toLocaleString()}</div><div class="donation-actions"><button class="action-btn" onclick="openPhotoModal(${d.projectId})" title="查看活动照片"><i class="fas fa-image"></i></button><button class="action-btn" onclick="openCertModalFor(${d.id})" title="查看NFT证书"><i class="fas fa-certificate"></i></button><button class="action-btn" onclick="copyHashText('${d.tx}')" title="复制交易哈希"><i class="fas fa-copy"></i></button></div></div>`).join("");
+}
+function renderCerts() {
+  document.getElementById("myCerts").innerHTML = certs.map(c => `<div class="cert-card" onclick="openCertModal(${c.id})"><div class="nft-name"><i class="fas fa-certificate" style="color:var(--a);"></i> ${c.name}</div><div class="nft-hash">${c.hash}</div></div>`).join("");
+  const recent = document.getElementById("recentDonations");
+  recent.innerHTML = donations.slice(0, 4).map(d => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--ln);font-size:13px;"><span>${d.name.slice(0, 12)}...</span><span style="font-weight:600;color:var(--p);">¥${d.amount}</span></div>`).join("") || `<div class="empty-state"><p>暂无捐赠记录</p></div>`;
+}
+function openProjectDetail(id) {
+  const p = projects.find(x => x.id === id);
+  if (!p) return;
+  const pct = Math.min(100, Math.round(p.raised / p.goal * 100));
+  const isCompleted = p.status === "completed";
+  const iconClass = projectIcons[p.img] || "fa-hand-holding-heart";
+  document.getElementById("projectModalTitle").textContent = p.title;
+  document.getElementById("projectModalBody").innerHTML = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;"><div><div style="width:100%;height:200px;background:linear-gradient(135deg,#e0f2f1,#b2dfdb);border-radius:var(--rds-sm);display:flex;align-items:center;justify-content:center;font-size:64px;color:var(--p);margin-bottom:16px;"><i class="fas ${iconClass}"></i></div></div><div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"><span class="tag tag-chain"><i class="fas fa-link"></i> ${p.chainTx}</span><span class="tag" style="background:var(--b50);color:var(--b);">${p.category}</span><span class="tag" style="background:var(--a50);color:#b45309;">第${p.batch}批拨款</span></div><p style="font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:12px;">${p.desc}</p><p style="font-size:13px;color:var(--t2);"><strong>执行机构：</strong>${p.org}</p></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0;"><div style="text-align:center;padding:12px;background:var(--p50);border-radius:var(--rds-sm);"><div style="font-size:20px;font-weight:700;color:var(--p);">¥${(p.raised/10000).toFixed(1)}万</div><div style="font-size:11px;color:var(--t2);">已筹集 / ${(p.goal/10000).toFixed(1)}万</div></div><div style="text-align:center;padding:12px;background:var(--b50);border-radius:var(--rds-sm);"><div style="font-size:20px;font-weight:700;color:var(--b);">${p.donors}</div><div style="font-size:11px;color:var(--t2);">捐款人数</div></div><div style="text-align:center;padding:12px;background:var(--g50);border-radius:var(--rds-sm);"><div style="font-size:20px;font-weight:700;color:var(--g);">${p.beneficiaries}</div><div style="font-size:11px;color:var(--t2);">受助人数</div></div><div style="text-align:center;padding:12px;background:var(--c50);border-radius:var(--rds-sm);"><div style="font-size:20px;font-weight:700;color:var(--c);">${pct}%</div><div style="font-size:11px;color:var(--t2);">完成进度</div></div></div><div class="project-card-progress" style="margin-bottom:20px;"><div class="progress-bar"><div class="progress-fill ${isCompleted ? "completed" : ""}" style="width:${pct}%"></div></div><div class="progress-info"><span>已筹集</span><span>${pct}%</span></div></div><div style="background:var(--p50);padding:16px;border-radius:var(--rds-sm);margin-bottom:20px;"><h4 style="font-size:14px;font-weight:600;color:var(--p2);margin-bottom:8px;"><i class="fas fa-link"></i> 链上资金流向</h4><div style="font-size:12px;"><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--p100);"><span>募资合约</span><span style="font-family:monospace;color:var(--p);">0x7421...8f3C</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--p100);"><span>已拨款批次</span><span style="font-weight:600;">${p.batch} 批</span></div><div style="display:flex;justify-content:space-between;padding:4px 0;"><span>智能合约状态</span><span style="color:var(--g);"><i class="fas fa-circle-check"></i> 运行中</span></div></div></div>${p.status === "ongoing" ? `<button class="btn-primary btn-block" onclick="openDonateModal(${p.id})"><i class="fas fa-hand-holding-heart"></i> 立即捐款 — 区块链上链存证</button>` : `<div style="text-align:center;padding:12px;background:var(--g50);border-radius:var(--rds-sm);color:var(--g);font-weight:600;"><i class="fas fa-circle-check"></i> 该项目已成功完成，感谢所有捐赠者的爱心支持！</div>`}`;
+  openModal("projectModal");
+}
+function openDonateModal(projectId) {
+  const p = projects.find(x => x.id === projectId);
+  if (!p) return;
+  currentDonateProject = p;
+  selectedAmount = 0;
+  document.getElementById("donateProjectName").textContent = p.title;
+  document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("on"));
+  document.getElementById("customAmount").value = "";
+  document.getElementById("donateMessage").value = "";
+  document.getElementById("donateStep1").style.display = "block";
+  document.getElementById("donateStep2").style.display = "none";
+  document.getElementById("donateStep3").style.display = "none";
+  closeModal("projectModal");
+  openModal("donateModal");
+}
+function selectAmount(btn) {
+  document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("on"));
+  btn.classList.add("on");
+  document.getElementById("customAmount").value = "";
+  selectedAmount = parseInt(btn.dataset.amount);
+}
+function customAmountInput() {
+  document.querySelectorAll(".amount-btn").forEach(b => b.classList.remove("on"));
+  const v = document.getElementById("customAmount").value;
+  selectedAmount = v ? parseInt(v) : 0;
+}
+function donateStep2() {
+  if (!selectedAmount || selectedAmount < 1) { alert("请选择或输入捐款金额"); return; }
+  document.getElementById("donateStep1").style.display = "none";
+  document.getElementById("donateStep2").style.display = "block";
+  document.getElementById("confirmProject").textContent = currentDonateProject.title;
+  document.getElementById("confirmAmount").textContent = "¥" + selectedAmount.toLocaleString();
+  document.getElementById("confirmMessage").textContent = document.getElementById("donateMessage").value || "-";
+}
+function donateStep1() {
+  document.getElementById("donateStep2").style.display = "none";
+  document.getElementById("donateStep1").style.display = "block";
+}
+function executeDonate() {
+  document.getElementById("donateStep2").style.display = "none";
+  document.getElementById("donateStep3").style.display = "block";
+  const hash = "0x" + Array.from({length: 40}, () => Math.floor(Math.random() * 16).toString(16)).join("");
+  document.getElementById("donateTxHash").textContent = hash.slice(0, 10) + "..." + hash.slice(-4);
+  document.getElementById("donateBlockNum").textContent = Math.floor(Math.random() * 500000 + 18000000).toLocaleString();
+  document.getElementById("donateTimestamp").textContent = new Date().toLocaleString("zh-CN", {timeZone: "Asia/Shanghai"}) + " UTC+8";
+}
+function copyHash(elementId) {
+  const el = document.getElementById(elementId);
+  if (el) navigator.clipboard.writeText(el.textContent).catch(() => {});
+}
+function copyHashText(txt) { navigator.clipboard.writeText(txt).catch(() => {}); }
+function openPhotoModal(projectId) {
+  const projectPhotos = photos.filter(p => p.projectId === projectId);
+  const p = projects.find(x => x.id === projectId);
+  document.querySelector("#photoModal h2").innerHTML = `<i class="fas fa-image"></i> ${p ? p.title : "活动照片"} 活动记录`;
+  document.getElementById("photoGrid").innerHTML = projectPhotos.map(ph => `<div class="photo-item"><span style="font-size:48px;">${ph.emoji}</span><div class="photo-item-overlay">${ph.label}</div></div>`).join("") || `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-image"></i><p>暂无活动照片</p></div>`;
+  openModal("photoModal");
+}
+function openCertModal(id) {
+  const c = certs.find(x => x.id === id);
+  if (!c) return;
+  document.getElementById("certAmount").textContent = "¥" + c.amount.toLocaleString();
+  document.getElementById("certProjectName").textContent = c.name;
+  document.getElementById("certDate").textContent = c.date;
+  document.getElementById("certHash").textContent = c.hash;
+  openModal("certModal");
+}
+function openCertModalFor(donationId) {
+  const d = donations.find(x => x.id === donationId);
+  if (!d) return;
+  const match = certs.find(c => c.projectId === d.projectId);
+  if (match) { openCertModal(match.id); return; }
+  const newCert = { id: certs.length + 1, projectId: d.projectId, name: d.name + " 爱心证书", amount: d.amount, date: d.date, hash: d.tx };
+  certs.push(newCert);
+  openCertModal(newCert.id);
+}
+function openModal(id) { document.getElementById(id).classList.add("open"); document.body.style.overflow = "hidden"; }
+function closeModal(id) { document.getElementById(id).classList.remove("open"); document.body.style.overflow = ""; }
+document.querySelectorAll(".modal-overlay").forEach(el => { el.addEventListener("click", function(e) { if (e.target === this) { this.classList.remove("open"); document.body.style.overflow = ""; } }); });
+function toggleFaq(el) { el.classList.toggle("open"); }
+renderProjects();
+renderNews();
+renderDonations();
+renderCerts();
+</script>
+</body>
+</html>
