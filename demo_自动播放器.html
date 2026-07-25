@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TraceAid 链善 Demo</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
+#player{width:1280px;max-width:100vw;aspect-ratio:16/9;background:linear-gradient(135deg,#0d9488,#0f766e);position:relative;overflow:hidden;border-radius:0;box-shadow:0 0 60px rgba(0,0,0,.5)}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 80px;opacity:0;transition:opacity .8s ease;background:inherit}
+.slide.active{opacity:1}
+.slide.bg-dark{background:linear-gradient(135deg,#0d9488,#0f766e)}
+.slide.bg-light{background:#f8fafc;color:#1e293b}
+.slide h1{font-size:44px;font-weight:800;color:#fff;text-align:center;margin-bottom:16px;line-height:1.3}
+.slide h2{font-size:28px;font-weight:700;color:#fff;text-align:center;margin-bottom:24px}
+.slide p{font-size:22px;color:rgba(255,255,255,.88);text-align:center;line-height:1.7;max-width:900px}
+.slide.light h1,.slide.light h2{color:#0d9488}
+.slide.light p{color:#1e293b}
+.logo{position:absolute;top:24px;left:30px;display:flex;align-items:center;gap:10px;color:#fff;font-size:16px;font-weight:600;opacity:.7}
+.logo span{color:#fbbf24}
+.subtitle{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.75);backdrop-filter:blur(8px);color:#fff;font-size:18px;padding:14px 28px;border-radius:12px;max-width:85%;text-align:center;line-height:1.5;opacity:0;transition:opacity .4s}
+.subtitle.on{opacity:1}
+.progress-bar{position:absolute;bottom:0;left:0;height:4px;background:rgba(255,255,255,.3);width:100%}
+.progress-fill{height:100%;background:#fbbf24;width:0%;transition:width .3s linear}
+.tag{position:absolute;top:24px;right:30px;background:rgba(255,255,255,.15);color:#fff;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:500}
+@media(max-width:768px){
+.slide{padding:30px 24px}
+.slide h1{font-size:28px}
+.slide p{font-size:16px}
+.logo{top:12px;left:14px;font-size:12px}
+.tag{top:12px;right:14px;font-size:10px}
+.subtitle{font-size:13px;padding:10px 16px;bottom:30px}
+}
+</style>
+</head>
+<body>
+<div id="player">
+<div class="logo">Trace<span>Aid</span> 链善</div>
+<div class="tag" id="timer">0:00 / 2:00</div>
+<div class="slide bg-dark " id="slide0">
+<h1>公益行业的信任危机</h1>
+<p>中国互联网公益市场规模超过480亿元，但信任问题一直是行业发展的最大障碍。资金去向不透明、受助方身份难核实、拨款过程缺监督，这三大痛点让捐赠者的信任成本居高不下。</p>
+</div>
+<div class="slide bg-light light" id="slide1">
+<h1>用户需求分析</h1>
+<p>捐赠人需要知道每一分钱去了哪里；基金会需要提升公信力和运营效率；受助方需要保护隐私的同时证明身份真实性。TraceAid针对这些需求，提供了完整的解决方案。</p>
+</div>
+<div class="slide bg-dark " id="slide2">
+<h1>TraceAid 解决方案</h1>
+<p>我们用三大核心功能解决用户痛点：第一，资金上链，每笔捐款生成唯一链上凭证，全程可追溯；第二，ZK隐私核验，验证身份真实性同时保护隐私；第三，智能合约拨款，按里程碑自动释放资金，杜绝人为干预。系统支持批量上传、一键核验、自动对账，大幅提升管理效率。</p>
+</div>
+<div class="slide bg-light light" id="slide3">
+<h1>用户触达策略</h1>
+<p>目标用户分为三类：个人捐赠者通过社交媒体和口碑传播触达；中小型公益基金会通过行业合作和定向推广接入；企业CSR部门通过定制化方案建立合作。从了解平台到完成首次捐赠，全流程不超过三分钟。</p>
+</div>
+<div class="slide bg-dark " id="slide4">
+<h1>市场前景与机遇</h1>
+<p>中国互联网公益市场预计2027年将达到800亿元，年复合增长率约18%。而区块链公益的渗透率目前不足1%，正处于爆发前夜。我们的差异化优势在于双端产品全覆盖、ZK隐私保护技术落地、低门槛接入方案。</p>
+</div>
+<div class="slide bg-light light" id="slide5">
+<h1>谢谢</h1>
+<p>让每一分钱都有迹可循，让每一份爱心不被辜负。TraceAid，用技术重塑公益信任。谢谢大家。</p>
+</div>
+<div class="subtitle" id="subtitle"></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+<audio id="audio" preload="auto" src="demo_配音.mp3"></audio>
+<script>
+const audio=document.getElementById("audio");
+const slides=document.querySelectorAll(".slide");
+const subtitle=document.getElementById("subtitle");
+const progress=document.getElementById("progressFill");
+const timer=document.getElementById("timer");
+const scenes=[{"name": "market", "text": "中国互联网公益市场规模超过480亿元，但信任问题一直是行业发展的最大障碍。资金去向不透明、受助方身份难核实、拨款过程缺监督，这三大痛点让捐赠者的信任成本居高不下。", "start": 0, "end": 20, "pause": 2}, {"name": "demand", "text": "捐赠人需要知道每一分钱去了哪里；基金会需要提升公信力和运营效率；受助方需要保护隐私的同时证明身份真实性。TraceAid针对这些需求，提供了完整的解决方案。", "start": 22, "end": 40, "pause": 2}, {"name": "solution", "text": "我们用三大核心功能解决用户痛点：第一，资金上链，每笔捐款生成唯一链上凭证，全程可追溯；第二，ZK隐私核验，验证身份真实性同时保护隐私；第三，智能合约拨款，按里程碑自动释放资金，杜绝人为干预。系统支持批量上传、一键核验、自动对账，大幅提升管理效率。", "start": 42, "end": 64, "pause": 2}, {"name": "reach", "text": "目标用户分为三类：个人捐赠者通过社交媒体和口碑传播触达；中小型公益基金会通过行业合作和定向推广接入；企业CSR部门通过定制化方案建立合作。从了解平台到完成首次捐赠，全流程不超过三分钟。", "start": 66, "end": 84, "pause": 2}, {"name": "market_size", "text": "中国互联网公益市场预计2027年将达到800亿元，年复合增长率约18%。而区块链公益的渗透率目前不足1%，正处于爆发前夜。我们的差异化优势在于双端产品全覆盖、ZK隐私保护技术落地、低门槛接入方案。", "start": 86, "end": 108, "pause": 2}, {"name": "closing", "text": "让每一分钱都有迹可循，让每一份爱心不被辜负。TraceAid，用技术重塑公益信任。谢谢大家。", "start": 110, "end": 118, "pause": 2}];
+const totalDuration=120;
+
+let currentScene=-1;
+function updateScene(time){
+    let idx=-1;
+    for(let i=0;i<scenes.length;i++){
+        if(time>=scenes[i].start && time<scenes[i].end){idx=i;break;}
+    }
+    if(idx!==currentScene){
+        slides.forEach(s=>s.classList.remove("active"));
+        currentScene=idx;
+        if(idx>=0) slides[idx].classList.add("active");
+    }
+    if(idx>=0){
+        subtitle.textContent=scenes[idx].text;
+        subtitle.classList.add("on");
+    }else{
+        subtitle.classList.remove("on");
+    }
+    const pct=Math.min(100,(time/totalDuration)*100);
+    progress.style.width=pct+"%";
+    const m=Math.floor(time/60);
+    const s=Math.floor(time%60);
+    const tm=Math.floor(totalDuration/60);
+    const ts=Math.floor(totalDuration%60);
+    timer.textContent=m+":"+s.toString().padStart(2,"0")+" / "+tm+":"+ts.toString().padStart(2,"0");
+}
+audio.addEventListener("timeupdate",()=>updateScene(audio.currentTime));
+audio.addEventListener("loadedmetadata",()=>{
+    // If duration is shorter than totalDuration, stretch
+    if(audio.duration<totalDuration){
+        const ratio=totalDuration/audio.duration;
+        // We"ll use real audio time but display scaled
+    }
+    updateScene(0);
+});
+// Show first slide immediately
+slides[0].classList.add("active");
+updateScene(0);
+
+// Click to play/pause
+document.getElementById("player").addEventListener("click",()=>{
+    if(audio.paused){audio.play()}else{audio.pause()}
+});
+</script>
+</body>
+</html>
