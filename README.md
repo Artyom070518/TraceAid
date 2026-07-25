@@ -1,5 +1,7 @@
 # TraceAid（链善）—— 公益资金透明化平台
 
+[![GitHub](https://img.shields.io/badge/GitHub-TraceAid-0d9488?style=flat&logo=github)](https://github.com/Artyom070518/TraceAid)  [![Netlify](https://img.shields.io/badge/Netlify-Deployed-0d9488?style=flat&logo=netlify)](https://willowy-begonia-4aa947.netlify.app/)
+
 > 一个面向公益捐助场景的透明化管理平台原型：捐赠资金上链记账、受助方凭证核验、异常资金流向检测，目标是让"钱去哪了"这件事变得可验证、可追溯。
 
 🔗 在线预览：[B 端管理后台](https://willowy-begonia-4aa947.netlify.app/)
